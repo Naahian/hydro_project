@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydroponics Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="text-center mb-4">🌱 Hydroponics Dashboard <u>Demo</u></h2>
+
+        <!-- Sensor Cards -->
+        <div class="row text-center">
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <h6>Temperature</h6>
+                    <h2 id="temp-value">-- °C</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <h6>pH Level</h6>
+                    <h2 id="ph-value">--</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <h6>EC Level</h6>
+                    <h2 id="ec-value">-- mS/cm</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <h6>Current Consumption</h6>
+                    <h2 id="current-value">-- W/h</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Graphs -->
+        <div class="row mt-4">
+            <div class="col-md-6"><canvas id="tempChart"></canvas></div>
+            <div class="col-md-6"><canvas id="phECChart"></canvas></div>
+        </div>
+
+        <!-- Current Actions & State -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm p-3">
+                    <h6>Current Action</h6>
+                    <h3 id="current-action" class="text-primary">None</h3>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm p-3">
+                    <h6>Current Growth Stage</h6>
+                    <h3 id="growth-stage" class="text-success">Seed</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crop Type -->
+        <div class="card shadow-sm mt-4 p-3">
+            <h6>Crop Details</h6>
+            <p><strong>Type:</strong> <span id="crop-type">Leafy</span></p>
+            <p><strong>Target Temperature:</strong> <span id="target-temp">18 - 22 °C</span></p>
+            <p><strong>Target pH:</strong> <span id="target-ph">5.5 - 6.5</span></p>
+            <p><strong>Target EC:</strong> <span id="target-ec">1.2 - 1.8 mS/cm</span></p>
+        </div>
+
+        <!-- History Table -->
+        <div class="card shadow-sm mt-4 p-3">
+            <h6>Sensor History (Last 5 Entries)</h6>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Time</th>
+                        <th>Temperature (°C)</th>
+                        <th>pH</th>
+                        <th>EC (mS/cm)</th>
+                        <th>Current (W/h)</th>
+                    </tr>
+                </thead>
+                <tbody id="history-table"></tbody>
+            </table>
+        </div>
+
+        <!-- Action History Table -->
+        <div class="card shadow-sm mt-4 p-3">
+            <h6>Action History (Last 5 Actions)</h6>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Time</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="action-history"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function getRandom(min, max) {
+            return (Math.random() * (max - min) + min).toFixed(2);
+        }
+
+        function updateSensorData() {
+            let temp = getRandom(18, 28);
+            let ph = getRandom(5.5, 7.0);
+            let ec = getRandom(1.0, 2.5);
+            let current = getRandom(10, 50);
+
+            document.getElementById("temp-value").innerText = temp + " °C";
+            document.getElementById("ph-value").innerText = ph;
+            document.getElementById("ec-value").innerText = ec + " mS/cm";
+            document.getElementById("current-value").innerText = current + " W/h";
+
+            let actions = ["None", "Watering", "Sensing", "Dosing Solution"];
+            let selectedAction = actions[Math.floor(Math.random() * actions.length)];
+            document.getElementById("current-action").innerText = selectedAction;
+
+            let stages = ["Seed", "Growth", "Fruit"];
+            document.getElementById("growth-stage").innerText = stages[Math.floor(Math.random() * stages.length)];
+
+            updateHistoryTable(temp, ph, ec, current);
+            if (selectedAction !== "None") updateActionHistory(selectedAction);
+        }
+
+        function updateHistoryTable(temp, ph, ec, current) {
+            let table = document.getElementById("history-table");
+            let now = new Date().toLocaleTimeString();
+
+            let row = `<tr><td>${now}</td><td>${temp} °C</td><td>${ph}</td><td>${ec} mS/cm</td><td>${current} W/h</td></tr>`;
+            table.insertAdjacentHTML('afterbegin', row);
+
+            while (table.rows.length > 5) {
+                table.deleteRow(-1);
+            }
+        }
+
+        function updateActionHistory(action) {
+            let table = document.getElementById("action-history");
+            let now = new Date().toLocaleTimeString();
+
+            let row = `<tr><td>${now}</td><td>${action}</td></tr>`;
+            table.insertAdjacentHTML('afterbegin', row);
+
+            while (table.rows.length > 5) {
+                table.deleteRow(-1);
+            }
+        }
+
+        setInterval(updateSensorData, 2000);
+
+        let tempChartCtx = document.getElementById("tempChart").getContext("2d");
+        let phECChartCtx = document.getElementById("phECChart").getContext("2d");
+
+        let tempChart = new Chart(tempChartCtx, {
+            type: "line",
+            data: {
+                labels: ["-10s", "-8s", "-6s", "-4s", "-2s", "Now"],
+                datasets: [{ label: "Temperature (°C)", data: [20, 21, 22, 21, 22, 23], borderColor: "red", fill: false }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        let phECChart = new Chart(phECChartCtx, {
+            type: "line",
+            data: {
+                labels: ["-10s", "-8s", "-6s", "-4s", "-2s", "Now"],
+                datasets: [
+                    { label: "pH Level", data: [6.5, 6.4, 6.3, 6.4, 6.5, 6.6], borderColor: "blue", fill: false },
+                    { label: "EC Level", data: [1.5, 1.6, 1.7, 1.6, 1.5, 1.4], borderColor: "green", fill: false }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    </script>
+
+</body>
+
+</html>
