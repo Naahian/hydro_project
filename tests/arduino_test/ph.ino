@@ -2,8 +2,9 @@
 #define VREF 5.0         // Reference voltage for ADC (use 3.3V if applicable)
 #define SAMPLES 10       // Number of samples for averaging
 #define TEMP_COEFF 0.03  // Temperature coefficient (approximate)
-#define pH_Offset 0.00   // Calibration offset (adjust based on calibration solution)
 
+float pH_Offset = 0.0;      // Offset for calibration
+float pHValue = 7.0;
 
 int readPHRaw() {
     int rawValue = 0;
@@ -23,22 +24,47 @@ float voltageToPH(float voltage) {
     return pHValue;
 }
 
+float readVoltage(int pin) {
+    int raw = 0;
+    for (int i = 0; i < SAMPLES; i++) {
+        raw += analogRead(pin);
+        delay(10);
+    }
+    return (raw / (float)SAMPLES) * (VREF / 1023.0);  // Convert ADC to voltage
+}
+
 // Apply temperature compensation)
 float compensatePH(float pH, float temp) {
     return pH - TEMP_COEFF * (temp - 25.0);
 }
 
-void setupPH() {
-    pinMode(PH_PIN, INPUT);
-    Serial.println("[INIT] pH Sensor Initialized.");
+void calibratePH() {
+  Serial.println("Place in pH 7 buffer.");
+  int countdown = 6;
+  Serial.print("Caliberation starts in..");
+  while(countdown--){
+    Serial.print("...");
+    Serial.print(countdown);
+    delay(1000);
+  }
+  Serial.println();
+  
+  int rawValue = readPHRaw();
+  float voltage = phRawToVoltage(rawValue);
+  pHValue = voltageToPH(voltage);
+  pH_Offset = 7 - pHValue;
+  
+  Serial.print("One pint(pH:7) Caliberation done! Offset: "); Serial.println(pH_Offset);
+  delay(2000);
 }
+
 
 void testPH() {
     Serial.println("[TEST] Reading pH Sensor...");
 
     int rawValue = readPHRaw();
     float voltage = phRawToVoltage(rawValue);
-    float pHValue = voltageToPH(voltage);
+    pHValue = voltageToPH(voltage);
     float pHCompensated = compensatePH(pHValue, temperature);
 
     // Detect invalid readings
@@ -51,6 +77,14 @@ void testPH() {
         Serial.print(" | Compensated pH: "); Serial.println(pHCompensated, 2);
     }
 }
+
+void setupPH() {
+    pinMode(PH_PIN, INPUT);
+    Serial.println("[INIT] pH Sensor Initialized.");
+    calibratePH();
+    delay(1000);
+}
+
 
 void loopPH() {
     testPH();

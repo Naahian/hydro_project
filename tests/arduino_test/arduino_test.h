@@ -2,7 +2,7 @@
 #define ARDUINO_TEST_H
 
 /** common **/
-float temperature = 25.0;   // Assume a constant temperature for now
+float temperature = 25.0;   // Assuming its 25
 
 /** network **/
 #include <ArduinoJson.h>

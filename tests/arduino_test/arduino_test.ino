@@ -4,16 +4,16 @@ void setup() {
   Serial.begin(19200);
   Serial.println("************** TEST Hydro_Project ***************");
   
-  setupNetwork();
+  // setupNetwork();
   // setupTDS();
-  setupTempSensor();
-  // setupPH();
+  // setupTempSensor();
+  setupPH();
   
 }
 
 void loop(){
-  loopNetwork();
+  // loopNetwork();
   // loopTDS();
   // loopTempSensor();
-  // loopPH();
+  loopPH();
 }
