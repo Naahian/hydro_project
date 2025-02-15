@@ -1,9 +1,10 @@
 # 🌱 Automated Vertical Hydroponics System  
 
-## 📌 Overview  
+## Overview  
 This project focuses on automating a **hydroponic vertical farming system** with **four tower pipes** using **IoT & smart monitoring**. The system automates **nutrient dosing, pH balancing, temperature control, and real-time monitoring** via a web dashboard.  
 
-## 🚀 Features  
+
+## Features  
 - ✅ **Automated Nutrient & pH Dosing** – Ensures optimal EC & pH levels.  
 - ✅ **Real-time Monitoring** – Tracks **temperature, pH, EC, and power consumption**.  
 - ✅ **Web Dashboard** – A **Bootstrap 5-based** UI for live sensor data & historical insights.  
@@ -13,7 +14,7 @@ This project focuses on automating a **hydroponic vertical farming system** with
 - ✅ **Action Logging** – Keeps a **history of watering, dosing, and sensing actions**.  
 
 
-## 📂 Project Structure  
+## Project Structure  
 ```bash
 📦 Automated-Hydroponics  
  ├── 📁 arduino/              # Arduino firmware  
@@ -34,13 +35,14 @@ This project focuses on automating a **hydroponic vertical farming system** with
  └── LICENSE                   # Open-source license  
 ```
 
-## 📡 Connectivity & Communication  
+
+## Connectivity & Communication  
 - 💠 **Bluetooth** – Used for local communication with the mobile app.  
 - 💠 **WiFi (ESP32)** – Sends data to the **web dashboard**.  
 - 💠 **MQTT Support** *(Planned)* – For cloud integration.  
 
 
-## 📖 Future Enhancements  
+## Future Enhancements  
 - 🔹 **Machine Learning-based growth optimization(Planned)** 🌿  
 - 🔹 **Mobile App Integration (Planned)** 📱  
 - 🔹 **Cloud-based Data Logging(Planned)** ☁️  
