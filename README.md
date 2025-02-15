@@ -3,8 +3,7 @@
 # 🌱 Automated Vertical Hydroponics System  
 
 ## Overview  
-This project focuses on automating a **hydroponic vertical farming system** with **four tower pipes** using **IoT & smart monitoring**. The system automates **nutrient dosing, pH balancing, temperature control, and real-time monitoring** via a web dashboard.  
-
+This project aims to **simplify farming in urban and tight spaces** by automating a **hydroponic vertical farming system** with **four tower pipes**. It optimizes resource usage by **automating nutrient dosing, pH balancing, temperature control, and real-time monitoring**, ensuring a **sustainable and efficient farming system**. The system also helps **reduce water and energy waste** while maintaining ideal growing conditions, making urban farming more accessible and manageable.  
 
 ## Features  
 - **Automated Nutrient & pH Dosing** – Ensures optimal EC & pH levels.  
