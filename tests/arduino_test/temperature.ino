@@ -21,6 +21,7 @@ void testTempSensor() {
     } else {
         Serial.print("[TEST] Temp(C): ");
         Serial.println(tempC);
+        temperature = tempC;
     }
 }
 

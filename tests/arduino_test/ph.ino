@@ -40,7 +40,7 @@ float compensatePH(float pH, float temp) {
 
 void calibratePH() {
   Serial.println("Place in pH 7 buffer.");
-  int countdown = 6;
+  int countdown = 8;
   Serial.print("Caliberation starts in..");
   while(countdown--){
     Serial.print("...");
