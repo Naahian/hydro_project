@@ -1,3 +1,13 @@
+  /** TODO:
+   * create and init motor/actuators
+   * irrigate with pump
+   * mix with motor
+   * dosing pump, store total dosage in new JsonDocument and send via network.
+   * sensor array with servo + ph sensor water spray
+   * complete adjust functions 
+   * ...
+  **/
+
 #include "arduino.h"
 
 void setup(){
@@ -8,7 +18,6 @@ void setup(){
   setupPH();
   setupTDS();
   setupNetwork();
-  //TODO: create and init motor/actuators
 
   writeConfigData(25, 150, 7.0, TYPE_LEAFY, STAGE_SEED);
   calibratePH();
@@ -17,29 +26,53 @@ void setup(){
 
 void loop(){  
   readSensorData();
-  String sensorData = getSensorData();
-  String configData = getConfigData();
-  writeBT(sensorData);
-  /**
-  TODO:
-    - compare sensor and config data
-    - dosing, mixing, watering to adjust
-  **/
+  String sensordata = getSensorData();
+  String configdata = getConfigData();
+  writeBT(sensordata);
+  
+  adjustPH();
+  adjustEC();
+  adjustTemp();
 
   delay(2000);
 }
 
 
+void adjustPH(){
+  if(sensorData["ph"] < configData["ph"]){
+    //dose Solution A
+  }
+  else if(sensorData["ph"] > configData["ph"]){
+    //dose Solution B
+  }
+}
 
+void adjustEC(){
+  if(sensorData["ec"] < configData["ec"]){
+    //dose Solution A + Solution B (according to ratio)
+  }
+  else if(sensorData["ec"] > configData["ec"]){
+    //dose water
+  }
+}
+
+void adjustTemp(){
+  if(sensorData["temp(C)"] < configData["temp(C)"]){
+    
+  }
+  else if(sensorData["temp(C)"] > configData["temp(C)"]){
+    
+  }
+}
 
 /*
 start
-    -done-> init sensors
+    --> init sensors  (done)
     --> init actuators
-    -done-> load/init target values
+    --> load/init target values (done)
     loop
-        -done-> start sensing(temp -> tds -> ph -> current)
-        -done-> store reading values
+        --> start sensing(temp -> tds -> ph -> current)   (done)
+        --> store reading values  (done)
         --> compare with target
         --> adjust via actuators(dosing pump(solution, water), mixing motor)
 
