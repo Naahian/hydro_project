@@ -27,5 +27,6 @@ This project aims to **simplify farming in urban and tight spaces** by automatin
 - **Cloud-based Data Logging(Planned)** ☁️  
 
 ### dashboard demo screenshot
-![dashboard_demo](https://github.com/user-attachments/assets/b969e5ce-e3c8-4695-9c0f-2d0888dbe80d)
+![image](https://github.com/user-attachments/assets/27086669-0f21-4993-b93d-a453801109aa)
+
 
