@@ -20,8 +20,7 @@ const String STAGE_FRUIT = "fruit";
 #include <SoftwareSerial.h>
 
 void setupNetwork();
-String getSensorData();
-String getConfigData();
+
 String readBT();
 void writeBT(String text);
 
