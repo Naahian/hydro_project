@@ -1,4 +1,3 @@
-#define TDS_PIN A1     // Analog pin for TDS sensor
 #define VREF 5.0       // Reference voltage for ADC (change if using 3.3V)
 #define SAMPLES 10     // Number of samples for averaging
 #define TEMP_COEFF 0.02 // Compensation factor per °C

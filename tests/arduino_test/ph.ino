@@ -1,4 +1,4 @@
-#define PH_PIN A2        // Analog pin for pH sensor
+
 #define VREF 5.0         // Reference voltage for ADC (use 3.3V if applicable)
 #define SAMPLES 10       // Number of samples for averaging
 #define TEMP_COEFF 0.03  // Temperature coefficient (approximate)

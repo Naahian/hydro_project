@@ -24,14 +24,14 @@ void setupNetwork();
 String readBT();
 void writeBT(String text);
 
-/** temp sensor **/
+/** Temp Sensor **/
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
 void setupTempSensor();
 float getTemp();
 
-/** tds sensor **/
+/** TDS Sensor **/
 int readTDSRaw();
 float tdsRawToVoltage(int rawValue);
 float voltageToTDS(float voltage);
@@ -39,7 +39,7 @@ float tdsToEC(float tds);
 float getEC();
 void setupTDS();
 
-/** ph sensor **/
+/** pH Sensor **/
 int readPHRaw();
 float phRawToVoltage(int rawValue);
 float voltageToPH(float voltage);
@@ -48,10 +48,29 @@ void setupPH();
 float getPH();
 void calibratePH();
 
-/** data **/
+/** Data **/
 void readSensorData();
 void writeConfigData(float temp, float ec, float ph, String type, String stage);
 String getSensorData();
 String getConfigData();
+
+/** Current Sensor **/ 
+#include <Wire.h>
+#include <Adafruit_INA219.h>
+
+Adafruit_INA219 ina219;
+void setupCurrentSensor();
+void readCurrentSensor();
+
+/** System Adjust Functions **/
+void adjustPH();
+void adjustPH();
+
+/** Acuators:Motors, relays, pumps etc. **/
+void setupRelay();
+void relayPumpOn();
+void relayPumpOff();
+void relayProbeOn();
+void relayProbeOff();
 
 #endif

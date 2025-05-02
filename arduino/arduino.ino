@@ -1,13 +1,3 @@
-  /** TODO:
-   * create and init motor/actuators
-   * irrigate with pump
-   * mix with motor
-   * dosing pump, store total dosage in new JsonDocument and send via network.
-   * sensor array with servo + ph sensor water spray
-   * complete adjust functions 
-   * ...
-  **/
-
 #include "arduino.h"
 
 void setup(){
@@ -38,32 +28,16 @@ void loop(){
 }
 
 
-void adjustPH(){
-  if(sensorData["ph"] < configData["ph"]){
-    //dose Solution A
-  }
-  else if(sensorData["ph"] > configData["ph"]){
-    //dose Solution B
-  }
-}
 
-void adjustEC(){
-  if(sensorData["ec"] < configData["ec"]){
-    //dose Solution A + Solution B (according to ratio)
-  }
-  else if(sensorData["ec"] > configData["ec"]){
-    //dose water
-  }
-}
-
-void adjustTemp(){
-  if(sensorData["temp(C)"] < configData["temp(C)"]){
-    
-  }
-  else if(sensorData["temp(C)"] > configData["temp(C)"]){
-    
-  }
-}
+  /** TODO:
+   * create and init motor/actuators
+   * irrigate with pump
+   * mix with motor
+   * dosing pump, store total dosage in new JsonDocument and send via network.
+   * sensor array with servo + ph sensor water spray
+   * complete adjust functions 
+   * ...
+  **/
 
 /*
 start

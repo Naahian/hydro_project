@@ -1,17 +1,19 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define TEMP_PIN A4
+#define TEMP_PIN A6
 
 OneWire oneWire(TEMP_PIN);
 DallasTemperature tempSensor(&oneWire);
 
-void setupTempSensor(){
+void setupTempSensor()
+{
     tempSensor.begin();
     Serial.println("[INIT] Temperature Sensor Initialized.");
 }
 
-float getTemp(){
+float getTemp()
+{
     tempSensor.requestTemperatures();
     return tempSensor.getTempCByIndex(0);
 }
