@@ -17,6 +17,8 @@ float tdsRawToVoltage(int rawValue) {
 }
 
 float voltageToTDS(float voltage) {
+    float temperature = getTemp();   // Assuming its 25
+    
     float tdsValue = (133.42 * voltage * voltage * voltage - 
                       255.86 * voltage * voltage + 
                       857.39 * voltage) * (1.0 + TEMP_COEFF * (temperature - 25.0));
@@ -51,6 +53,17 @@ void testTDS() {
         Serial.println(" µS/cm");
     }
 }
+
+float getEC()
+{
+    int rawValue = readTDSRaw();
+    float voltage = tdsRawToVoltage(rawValue);
+    float tdsValue = voltageToTDS(voltage);
+    float ecValue = tdsToEC(tdsValue);
+
+  return ecValue;
+}
+
 
 void loopTDS() {
     testTDS();

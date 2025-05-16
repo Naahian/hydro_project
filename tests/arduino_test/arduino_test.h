@@ -2,18 +2,17 @@
 #define ARDUINO_TEST_H
 
 /** common **/
-float temperature = 25.0;   // Assuming its 25
 
 /** network **/
 #include <ArduinoJson.h>
-#include <SoftwareSerial.h>
+// #include <SoftwareSerial.h>
 
-void setupNetwork();
+// void setupNetwork();
 void loopNetwork();
 String getSensorData();
 String getConfigData();
-String readBT();
-void writeBT(String text);
+// String readBT();
+// void writeBT(String text);
 
 /** temp sensor **/
 #include <OneWire.h>

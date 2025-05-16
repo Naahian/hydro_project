@@ -39,7 +39,7 @@ float compensatePH(float pH, float temp) {
 }
 
 void calibratePH() {
-  Serial.println("Place in pH 7 buffer.");
+  Serial.println("Place Probe in pH-7 buffer.");
   int countdown = 8;
   Serial.print("Caliberation starts in..");
   while(countdown--){
@@ -58,10 +58,22 @@ void calibratePH() {
   delay(2000);
 }
 
+float getPH(){
+        
+    float temperature = getTemp();   // Assuming its 25
+    int raw = readPHRaw();
+    int rawValue = readPHRaw();
+    float voltage = phRawToVoltage(rawValue);
+    pHValue = voltageToPH(voltage);
+    float pHCompensated = compensatePH(pHValue, temperature);
+
+  return pHCompensated;
+}
 
 void testPH() {
     Serial.println("[TEST] Reading pH Sensor...");
 
+    float temperature = getTemp();   // Assuming its 25
     int rawValue = readPHRaw();
     float voltage = phRawToVoltage(rawValue);
     pHValue = voltageToPH(voltage);

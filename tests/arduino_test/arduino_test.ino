@@ -2,14 +2,14 @@
 
 // *** current pin config ***
 
-#define TEMP_PIN A6
+#define TEMP_PIN A2
 #define TDS_PIN A7  
 #define PH_PIN A0        
 
 void testRaw();
 
 void setup() {
-  Serial.begin(19200);
+  Serial.begin(9600);
   Serial.println("************** TEST Hydro_Project ***************");
   
   setupNetwork();
@@ -17,20 +17,19 @@ void setup() {
   setupTDS();
   setupPH();
   
-  pinMode(A0, INPUT);
   
 }
 
 void loop(){
-  loopNetwork();
-  if(Serial.available()){
-    String input = Serial.readString();
-    writeBT(input);
-  }
-  loopTempSensor();
+  readSensorData();
+  String sensorData = getSensorData();
+  Serial.println(sensorData);
+
+  // loopTempSensor();
   // loopTDS();
   // loopPH();
   // testRaw();
+
 
 }
 
