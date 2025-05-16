@@ -24,7 +24,7 @@ float voltageToTDS(float voltage)
   float tdsValue = (133.42 * voltage * voltage * voltage -
                     255.86 * voltage * voltage +
                     857.39 * voltage) *
-                   (1.0 + TEMP_COEFF * (temperature - 25.0));
+                   (1.0 + TEMP_COEFF * (getTemp() - 25.0));
   return tdsValue;
 }
 
@@ -35,12 +35,12 @@ float tdsToEC(float tds)
 
 float getEC()
 {
-  float raw = readTDSRaw();
-  float voltage = tdsRawToVoltage(raw);
-  float tds = voltageToTDS(voltage);
-  float ec = tdsToEC(tds);
+    int rawValue = readTDSRaw();
+    float voltage = tdsRawToVoltage(rawValue);
+    float tdsValue = voltageToTDS(voltage);
+    float ecValue = tdsToEC(tdsValue);
 
-  return ec;
+  return ecValue;
 }
 
 void setupTDS()

@@ -1,4 +1,3 @@
-#define PH_PIN A5      // Analog pin for pH sensor
 #define VREF 5.0        // Reference voltage for ADC (use 3.3V if applicable)
 #define SAMPLES 10      // Number of samples for averaging
 #define TEMP_COEFF 0.03 // Temperature coefficient (approximate)
@@ -54,7 +53,8 @@ float getPH(){
   int raw = readPHRaw();
   float voltage  = phRawToVoltage(raw);
   float ph = voltageToPH(voltage);
-  float compPH = compensatePH(ph, temperature);
+  float temp = getTemp();
+  float compPH = compensatePH(ph, temp);
 
   return compPH;
 }

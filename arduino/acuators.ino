@@ -5,11 +5,11 @@
 //TODO: Solution A pump, Solution B pump
 
 void setupRelay() {
-  pinMode(RELAY1_PIN, OUTPUT);
+  pinMode(relayPump_PIN, OUTPUT);
   pinMode(relayProbe_PIN, OUTPUT);
   
   // Initialize both relays to OFF state
-  digitalWrite(RELAY1_PIN, HIGH);
+  digitalWrite(relayPump_PIN, HIGH);
   digitalWrite(relayProbe_PIN, HIGH);
 
   Serial.println("[INIT] Relay module initialized.");

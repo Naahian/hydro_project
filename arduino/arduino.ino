@@ -1,30 +1,32 @@
 #include "arduino.h"
 
+//pins
+#define TEMP_PIN A2
+#define TDS_PIN A7  
+#define PH_PIN A0    
+
+// WARNING: Remove bluetooth TX,RX pins when uploading.
+
 void setup(){
-  Serial.begin(19200);
-  Serial.println("*********** Hydro_Project ***********");
-  
+  Serial.begin(9600);
+  Serial.println("*********** Vertical Hydroponic System ***********");
+
   setupTempSensor();
   setupPH();
   setupTDS();
-  setupNetwork();
 
   writeConfigData(25, 150, 7.0, TYPE_LEAFY, STAGE_SEED);
   calibratePH();
 
+
 }
+
 
 void loop(){  
   readSensorData();
   String sensordata = getSensorData();
-  String configdata = getConfigData();
-  writeBT(sensordata);
+  Serial.println(sensordata); 
   
-  adjustPH();
-  adjustEC();
-  adjustTemp();
-
-  delay(2000);
 }
 
 

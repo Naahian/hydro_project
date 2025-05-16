@@ -1,13 +1,20 @@
 void readSensorData(){
-  float temp = getTemp();
-  float ec = getEC();
-  float ph = getPH();
   
+  float temp = getTemp();
+  delay(100);
+  float ec = getEC();
+  delay(100);
+  float ph = getPH();
+
   sensorData["name"] = "sensor_data";
-  sensorData["temp(C)"] = round2(temp);
-  sensorData["ec"] = round2(ec);
-  sensorData["ph"] = round2(ph);
+  sensorData["temp(C)"] = temp;
+  sensorData["ec"] = ec;
+  sensorData["ph"] = ph;
+
+  
+  delay(800); //completing full 1 second delay
 }
+
 
 void writeConfigData(float temp, float ec, float ph, String type, String stage){
   Serial.println("Setting Config Data...");

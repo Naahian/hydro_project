@@ -4,7 +4,7 @@
 /** common **/
 #include <ArduinoJson.h>
 
-float temperature = 25.0; // Assuming its 25
+// float temperature = 25.0; // Assuming its 25
 DynamicJsonDocument sensorData(256);
 DynamicJsonDocument configData(256);
 
