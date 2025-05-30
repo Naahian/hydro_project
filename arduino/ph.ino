@@ -2,7 +2,7 @@
 #define SAMPLES 10      // Number of samples for averaging
 #define TEMP_COEFF 0.03 // Temperature coefficient (approximate)
 
-float pH_Offset = 0.0;      // Offset for calibration
+float ph_offset = 0.0;      // Offset for calibration
 float pHValue = 7.0;
 
 int readPHRaw(){
@@ -20,7 +20,7 @@ float phRawToVoltage(int rawValue){
 }
 
 float voltageToPH(float voltage){
-    float pHValue = 7.0 + ((2.5 - voltage) * 3.5) + pH_Offset;
+    float pHValue = 7.0 + ((2.5 - voltage) * 3.5) + ph_offset;
     return pHValue;
 }
 
@@ -43,9 +43,10 @@ void calibratePH() {
   int rawValue = readPHRaw();
   float voltage = phRawToVoltage(rawValue);
   pHValue = voltageToPH(voltage);
-  pH_Offset = 7 - pHValue;
+  float ph_offset = 7 - pHValue;
   
-  Serial.print("One pint(pH:7) Caliberation done! Offset: "); Serial.println(pH_Offset);
+  SystemConfig["ph_offset"] = ph_offset;
+  Serial.print("One pint(pH:7) Caliberation done! Offset: "); Serial.println(ph_offset);
   delay(2000);
 }
 

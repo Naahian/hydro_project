@@ -1,3 +1,5 @@
+
+
 void readSensorData(){
   
   float temp = getTemp();
@@ -6,41 +8,85 @@ void readSensorData(){
   delay(100);
   float ph = getPH();
 
-  sensorData["name"] = "sensor_data";
-  sensorData["temp(C)"] = temp;
-  sensorData["ec"] = ec;
-  sensorData["ph"] = ph;
 
+  SystemStatus["temp(C)"] = temp;
+  SystemStatus["ec"] = ec;
+  SystemStatus["ph"] = ph;
+
+  delay(800); //100+100+800 completing full 1 second delay
+}
+
+
+void initSystemStatus(){
+  SystemStatus["name"] = "System_Status";
+  SystemStatus["solution_A_pump"] = false;
+  SystemStatus["solution_B_pump"] = false;
+  SystemStatus["sensing"] = false;
+  SystemStatus["water_pump"] = false;
+  SystemStatus["temp(C)"] = -1;
+  SystemStatus["ec"] = -1;
+  SystemStatus["ph"] = -1;
+}
+
+
+void initSystemConfig(
+  float temp, float ec, float ph, 
+  float ph_lower, float ph_upper, 
+  float ec_lower, float ec_upper,
+  String type, String stage, float solution_ratio
+  ){
   
-  delay(800); //completing full 1 second delay
+  Serial.println("[INIT] Setting Config Data...");
+  //TODO: check for config from sd card
+  if(SystemConfig.isNull()){
+  SystemConfig["name"] = "System_Config";
+  SystemConfig["temp(C)"] = round2(temp);
+  SystemConfig["solution_ratio"] = solution_ratio;
+  SystemConfig["ec_lower"] = 1.0;    // Example lower EC bound (adjust as needed)
+  SystemConfig["ec_upper"] = 2.4;    // Example upper EC bound (adjust as needed)
+  SystemConfig["ph_lower"] = 5.5;    // Example lower pH bound (adjust as needed)
+  SystemConfig["ph_upper"] = 6.5;    // Example upper pH bound (adjust as needed)
+  SystemConfig["sensor_on_duration"] = 7000;  // Sense for 7 sec duration
+  SystemConfig["sensor_on_interval"] = 14000;  // Start sensing every 14 sec
+  SystemConfig["type"] = type;
+  SystemConfig["stage"] = stage;
+  
+  calibratePH();  //to set SystemConfig["ph_offset"] data
+  }
 }
 
 
-void writeConfigData(float temp, float ec, float ph, String type, String stage){
-  Serial.println("Setting Config Data...");
-
-  configData["name"] = "config_data";
-  configData["temp(C)"] = round2(temp);
-  configData["ec"] = round2(ec);
-  configData["ph"] = round2(ph);
-  configData["type"] = type;
-  configData["stage"] = stage;
-
-  String configData = getConfigData();
-  Serial.println(configData);
+void processInput(){
+if (Serial.available()) {
+    // 1. Read input (with timeout)
+    String input = Serial.readStringUntil('\n');
+    input.trim(); // Remove whitespace/newlines
+    
+    StaticJsonDocument<200> doc;
+    DeserializationError error = deserializeJson(doc, input);   
+    if (error) {
+      Serial.print(F("JSON error: "));
+      Serial.println(error.c_str());
+      Serial.print(F("Input was: \""));
+      Serial.print(input);
+      Serial.println("\"");
+    } else {
+      Serial.print(doc["temp"].as<float>());
+    }
+    Serial.println("-----");
+  }
 }
+
 
 // JSON Serialization
-String getSensorData(){
-  String output;
-  serializeJson(sensorData, output);
-  return output;
+void printSystemStatus(){
+  serializeJsonPretty(SystemStatus, Serial);
+  Serial.println();
 }
 
-String getConfigData(){
-  String output;
-  serializeJson(configData, output);
-  return output;
+void printSystemConfig(){
+  serializeJsonPretty(SystemConfig, Serial);
+  Serial.println();
 }
 
 double round2(double value) {

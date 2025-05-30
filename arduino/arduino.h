@@ -4,11 +4,10 @@
 /** common **/
 #include <ArduinoJson.h>
 
-// float temperature = 25.0; // Assuming its 25
-DynamicJsonDocument sensorData(256);
-DynamicJsonDocument configData(256);
-
 /** Constants **/
+DynamicJsonDocument SystemStatus(128);
+DynamicJsonDocument SystemConfig(128);
+// float temperature = 25.0; // Assuming its 25
 const String TYPE_LEAFY = "leafy";
 const String TYPE_FRUITY = "fruity";
 
@@ -50,9 +49,15 @@ void calibratePH();
 
 /** Data **/
 void readSensorData();
-void writeConfigData(float temp, float ec, float ph, String type, String stage);
-String getSensorData();
-String getConfigData();
+void initSystemStatus();
+void initSystemConfig(float temp, float ec, float ph, 
+                     float ph_lower, float ph_upper,
+                     float ec_lower, float ec_upper,
+                     String type, String stage, float solution_ratio);
+void processInput();
+void printSystemStatus();
+void printSystemConfig();
+double round2(double value);
 
 /** Current Sensor **/ 
 #include <Wire.h>

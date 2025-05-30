@@ -1,32 +1,65 @@
 #include "arduino.h"
 
+// WARNING: Remove bluetooth TX,RX pins when uploading.
 //pins
 #define TEMP_PIN A2
 #define TDS_PIN A7  
 #define PH_PIN A0    
+#define relayPump_PIN 4
+#define relaySensor_PIN 2
 
-// WARNING: Remove bluetooth TX,RX pins when uploading.
+//global constants
+unsigned long previousMillis = 0;  // Tracks last state change
+
 
 void setup(){
   Serial.begin(9600);
   Serial.println("*********** Vertical Hydroponic System ***********");
-
+  
+  setupRelay();
+  relaySensorOn();  //dependency: needed for initSystemConfig caliberation
+  initSystemConfig(25.3, 1.8, 6.2, 5.5, 6.5, 1.0, 2.4, "leafy", "seed", 0.5);
+  printSystemConfig();
+  initSystemStatus();
+  
   setupTempSensor();
   setupPH();
   setupTDS();
+  // setupCurrentSensor();
+  // delay(100);
 
-  writeConfigData(25, 150, 7.0, TYPE_LEAFY, STAGE_SEED);
-  calibratePH();
-
-
+  relaySensorOff();
+  delay(1000);
 }
 
 
-void loop(){  
-  readSensorData();
-  String sensordata = getSensorData();
-  Serial.println(sensordata); 
+void loop(){ 
+  //check and process incoming data from BT
+  processInput();
   
+  unsigned long currentMillis = millis();
+
+
+  //sense every X second for Y duration.
+  unsigned long onDuration = SystemConfig["sensor_on_duration"].as<unsigned long>();
+  unsigned long interval = SystemConfig["sensor_on_interval"].as<unsigned long>();
+  bool isSensing = SystemStatus["sensing"].as<bool>();
+  
+  if (currentMillis - previousMillis >= (isSensing ?  onDuration : (interval -  onDuration))) {
+    previousMillis = currentMillis;
+    SystemStatus["sensing"] = !SystemStatus["sensing"];     // Toggle state
+ }
+
+  if (SystemStatus["sensing"]) {
+      relaySensorOn();
+      delay(100);            
+      readSensorData();     //takes around 1sec delay
+      printSystemStatus();
+      // adjustPH();
+      // adjustEC();
+    } else{
+      relaySensorOff();           
+    }
 }
 
 
