@@ -1,16 +1,15 @@
 // Acuators are output modules relay, pump and stuff
-#define relayPump_PIN 8
-#define relayProbe_PIN 9
+
 
 //TODO: Solution A pump, Solution B pump
 
 void setupRelay() {
   pinMode(relayPump_PIN, OUTPUT);
-  pinMode(relayProbe_PIN, OUTPUT);
+  pinMode(relaySensor_PIN, OUTPUT);
   
   // Initialize both relays to OFF state
   digitalWrite(relayPump_PIN, HIGH);
-  digitalWrite(relayProbe_PIN, HIGH);
+  digitalWrite(relaySensor_PIN, HIGH);
 
   Serial.println("[INIT] Relay module initialized.");
 }
@@ -18,22 +17,22 @@ void setupRelay() {
 // Relay Water Pump controls
 void relayPumpOn() {
   digitalWrite(relayPump_PIN, LOW);  // LOW = ON for most relay modules
-  Serial.println("Relay 1 ON");
+  SystemStatus["solution_A_pump"] = true;
+  SystemStatus["solution_B_pump"] = true;
 }
 
 void relayPumpOff() {
   digitalWrite(relayPump_PIN, HIGH); // HIGH = OFF
-  Serial.println("Relay 1 OFF");
+  SystemStatus["solution_A_pump"] = false;
+  SystemStatus["solution_B_pump"] = false;
 }
 
 // Relay Sensor Probe controls
-void relayProbeOn() {
-  digitalWrite(relayProbe_PIN, LOW);
-  Serial.println("Relay 2 ON");
+void relaySensorOn() {
+  digitalWrite(relaySensor_PIN, LOW);
 }
 
-void relayProbeOff() {
-  digitalWrite(relayProbe_PIN, HIGH);
-  Serial.println("Relay 2 OFF");
+void relaySensorOff() {
+  digitalWrite(relaySensor_PIN, HIGH);
 }
 
