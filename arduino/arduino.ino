@@ -17,9 +17,10 @@ void setup(){
   Serial.println("*********** Vertical Hydroponic System ***********");
   
   setupRelay();
-  relaySensorOn();  //dependency: needed for initSystemConfig caliberation
+  relaySensorOn();  
   initSystemConfig(25.3, 1.8, 6.2, 5.5, 6.5, 1.0, 2.4, "leafy", "seed", 0.5);
   printSystemConfig();
+  calibratePH();  //to set SystemConfig["ph_offset"] data
   initSystemStatus();
   
   setupTempSensor();
@@ -36,11 +37,11 @@ void setup(){
 void loop(){ 
   //check and process incoming data from BT
   processInput();
-  
   unsigned long currentMillis = millis();
 
 
-  //sense every X second for Y duration.
+  // sense every X second for Y duration.
+  // for example, sense every 12 hours for 1 min.
   unsigned long onDuration = SystemConfig["sensor_on_duration"].as<unsigned long>();
   unsigned long interval = SystemConfig["sensor_on_interval"].as<unsigned long>();
   bool isSensing = SystemStatus["sensing"].as<bool>();
@@ -64,15 +65,15 @@ void loop(){
 
 
 
-  /** TODO:
-   * create and init motor/actuators
-   * irrigate with pump
-   * mix with motor
-   * dosing pump, store total dosage in new JsonDocument and send via network.
-   * sensor array with servo + ph sensor water spray
-   * complete adjust functions 
-   * ...
-  **/
+/** TODO:
+  * create and init motor/actuators
+  * irrigate with pump
+  * mix with motor
+  * dosing pump, store total dosage in new JsonDocument and send via network.
+  * sensor array with servo + ph sensor water spray
+  * complete adjust functions 
+  * ...
+**/
 
 /*
 start
@@ -84,5 +85,4 @@ start
         --> store reading values  (done)
         --> compare with target
         --> adjust via actuators(dosing pump(solution, water), mixing motor)
-
 */

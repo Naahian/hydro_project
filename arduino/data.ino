@@ -51,7 +51,7 @@ void initSystemConfig(
   SystemConfig["type"] = type;
   SystemConfig["stage"] = stage;
   
-  calibratePH();  //to set SystemConfig["ph_offset"] data
+  
   }
 }
 
